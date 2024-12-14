@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import Lottie from "lottie-react";
 import loginLottieData from "../assets/Lottie/login.json";
@@ -8,6 +8,8 @@ import AuthContext from "../context/AuthContext";
 const Login = () => {
   const { signIn, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/";
   const handleSignIn = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -18,10 +20,11 @@ const Login = () => {
 
     signIn(email, password)
       .then((res) => {
-        // console.log(res.user);
+        console.log(location.state);
         setUser(res.user);
         // toast.success("Welcome" + " " + res.user.email);
-        navigate(location?.state ? location.state : "/");
+        // navigate(location?.state ? location.state : "/");
+        navigate(from);
       })
       .catch((err) => {
         // toast.error(err.message);
